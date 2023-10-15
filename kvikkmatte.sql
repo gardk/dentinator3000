@@ -1,12 +1,11 @@
-.header off
-.mode list
-.separator ,
-
-.output output.csv
-
 .param set :f1 0.0125
 .param set :f2 0.717
 .param set :probe 1
+
+.header off
+.mode list
+.separator ,
+.output output.csv
 
 select
     group_concat(
@@ -22,6 +21,5 @@ group by
 order by
     sample asc;
 
-.mode column
 .output
 

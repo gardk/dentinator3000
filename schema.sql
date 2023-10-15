@@ -84,7 +84,7 @@ CREATE VIEW IF NOT EXISTS samples_line_seq AS
 SELECT
     sample,
     line,
-    row_number() OVER (PARTITION BY line, probe ORDER BY sample asc) as seq,
+    row_number() OVER (PARTITION BY line, probe ORDER BY sample ASC) as seq,
     probe,
     value
 FROM
