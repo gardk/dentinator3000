@@ -55,7 +55,22 @@ CREATE TABLE IF NOT EXISTS raw_samples (
 ) STRICT;
 
 CREATE TABLE IF NOT EXISTS raw_reference (
-    value integer NOT NULL
+    f1t integer NOT NULL
+) STRICT;
+
+CREATE TABLE IF NOT EXISTS samples (
+    sample integer PRIMARY KEY,
+    run integer NOT NULL,
+    seq integer NOT NULL,
+    probe integer NOT NULL,
+    f1t integer NOT NULL,
+
+    UNIQUE (run, seq)
+) STRICT;
+
+CREATE TABLE IF NOT EXISTS reference (
+    seq integer PRIMARY KEY,
+    f1t integer NOT NULL
 ) STRICT;
 
 CREATE VIEW IF NOT EXISTS samples AS
@@ -68,47 +83,13 @@ FROM
 ORDER BY
     sample ASC;
 
-CREATE VIEW IF NOT EXISTS samples_line AS
-SELECT
-    sample,
-    row_number() OVER (ORDER BY sample ASC) -
-    row_number() OVER (PARTITION BY probe ORDER BY sample ASC) AS line,
-    probe,
-    value
-FROM
-    samples
-ORDER BY
-    sample ASC;
-
-CREATE VIEW IF NOT EXISTS samples_line_seq AS
-SELECT
-    sample,
-    line,
-    row_number() OVER (PARTITION BY line, probe ORDER BY sample ASC) as seq,
-    probe,
-    value
-FROM
-    samples_line
-ORDER BY
-    sample ASC;
-
-CREATE VIEW IF NOT EXISTS reference AS
-SELECT
-    row_number() OVER () AS seq,
-    value
-FROM
-    raw_reference;
-
 CREATE VIEW IF NOT EXISTS samples_with_reference AS
 SELECT
     sample,
-    line,
-    seq,
+    run,
     probe,
-    samples_line_seq.value AS svalue,
-    reference.value AS rvalue
+    samples.f1t AS sf1t,
+    reference.f1t AS rf1t 
 FROM
-    samples_line_seq INNER JOIN reference USING (seq)
-ORDER BY
-    sample ASC;
+    samples LEFT JOIN reference USING (seq);
 
