@@ -1,5 +1,5 @@
 /testdata
 /input.csv
 /reference.csv
-/output
+/output/*.csv
 /db
