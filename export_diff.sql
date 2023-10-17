@@ -5,7 +5,7 @@
 .headers off
 .mode list
 
-.output output/probe0.csv
+.output output/probe0_diff.csv
 SELECT
     group_concat(printf('%.*f',
         :prec,
@@ -21,7 +21,7 @@ GROUP BY
 ORDER BY
     sample ASC;
 
-.output output/probe1.csv
+.output output/probe1_diff.csv
 SELECT
     group_concat(printf('%.*f',
         :prec,
