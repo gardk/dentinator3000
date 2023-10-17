@@ -73,16 +73,6 @@ CREATE TABLE IF NOT EXISTS reference (
     f1t integer NOT NULL
 ) STRICT;
 
-CREATE VIEW IF NOT EXISTS samples AS
-SELECT
-    sample,
-    probe,
-    f1t AS value
-FROM
-    raw_samples
-ORDER BY
-    sample ASC;
-
 CREATE VIEW IF NOT EXISTS samples_with_reference AS
 SELECT
     sample,
